@@ -2,9 +2,50 @@ import random as rand
 
 import data_loader
 
-import update_storage
 
-import generate_website
+def return_to_menu_page():
+    confirm_return_to_menu = input("\nPress enter to return to the main page")
+
+
+def display_menu_page():
+    """
+    if user enters anything other than valid input, listener loop will continue to list menu
+    selection and will only ever return valid input allowing for the main loop to always run
+    unless the exit input (0) is entered
+    :return: only return valid user input so that the program does not break
+    """
+
+    valid_inputs = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    is_valid_action = False
+
+    while not is_valid_action:
+        print("""
+0. Exit app
+
+1. List movies
+
+2. Add movie
+
+3. Delete movie
+
+4. Update movie
+
+5. Movie stats
+
+6. Select random movie
+
+7. Search movie
+
+8. Sort movies by rating
+
+9. Generate website""")
+
+        print("\nPlease enter a valid menu selection to perform")
+        action_to_perform = input("\nWhich action would you like to perform (0-8): ")
+        if action_to_perform in [" ", ""] or action_to_perform not in valid_inputs:
+            continue
+        else:
+            return int(action_to_perform)
 
 
 def return_sorted_dictionary_of_movie_ratings():

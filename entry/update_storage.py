@@ -1,14 +1,7 @@
 import json
 import os
-import sys
-# Appending the root directory of this project to the sys.path so that it can call
-# other packages
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-ROOT_DIR = os.path.dirname(os.path.dirname(CURRENT_DIR))
-sys.path.append(ROOT_DIR)
-
-from movie_database_app.data import json_data_loader
-from movie_database_app.helpers import return_api_response
+import data_loader
+from helpers import return_api_response
 
 
 def list_movies_in_database(filepath):
@@ -16,7 +9,7 @@ def list_movies_in_database(filepath):
     access current json movie data and print out each one along with its info
     :return:
     """
-    movie_database_object = json_data_loader.load_json_movie_data(filepath)
+    movie_database_object = data_loader.load_json_movie_data(filepath)
     print(f"\ntotal movies: {len(movie_database_object)}")
     for movie in movie_database_object:
         for movie_name, movie_info in movie.items():
@@ -25,7 +18,7 @@ def list_movies_in_database(filepath):
                 print(f'{movie_info_category}: {movie_info_details}')
 
 
-def add_movie_info():
+def add_movie_info(filename):
     """
     store python representation of json api data in a variable and attempts to initialize
     variables which hold dictionary key value pairs representing specific movie data. Either
@@ -33,7 +26,7 @@ def add_movie_info():
     :return:
     """
 
-    movie_database_object = json_data_loader.load_json_movie_data()
+    movie_database_object = data_loader.load_json_movie_data(filename)
     api_response_object = return_api_response.return_api_response_object()
     json_movie_database_file = os.path.join('data', 'movie_database_file.json')
     print(json_movie_database_file)
@@ -61,13 +54,13 @@ def add_movie_info():
         json.dump(movie_database_object, fileobj, indent=4)
 
 
-def delete_movie_from_database():
+def delete_movie_from_database(filename):
     """
     uses enumerate function to be able to delete movie based on index position if movie
     found in database
     :return:
     """
-    movie_database_object = json_data_loader.load_json_movie_data()
+    movie_database_object = data_loader.load_json_movie_data(filename)
     json_movie_database_file = os.path.join('data', 'movie_database_file.json')
     movie_to_delete = input("\nWhich movie would you like to remove from the database: ").title()
     for index, movie in enumerate(movie_database_object):
@@ -80,8 +73,8 @@ def delete_movie_from_database():
     print("\nMovie not found in database")
 
 
-def update_movie_rating():
-    movie_database_object = json_data_loader.load_json_movie_data()
+def update_movie_rating(filename):
+    movie_database_object = data_loader.load_json_movie_data(filename)
     json_movie_database_file = os.path.join('data', 'movie_database_file.json')
     movie_to_update = input("\nWhich movie would you like to update: ").title()
     if movie_to_update.isspace() or not movie_to_update:
